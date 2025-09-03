@@ -1,0 +1,8 @@
+{
+	"dependencies": {
+		"discord.js": "^14.22.1",
+		"dotenv": "^17.2.1",
+		"postgres": "^3.4.7"
+	},
+	"type": "module"
+}
