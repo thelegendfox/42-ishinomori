@@ -1,15 +1,6 @@
 import type { Command } from "../../util/types/commandTypes.ts";
-import {
-	SlashCommandBuilder,
-	MessageFlags,
-	ChatInputCommandInteraction,
-	InteractionContextType,
-	ButtonInteraction,
-} from "discord.js";
-import componentHeader from "../../util/components/createComponentHeader.ts";
-import componentFooter from "../../util/components/componentFooter.ts";
-
-const header = componentHeader({ title: "Happy ta' Help!" });
+import { MessageFlags, ButtonInteraction, ComponentType } from "discord.js";
+import createContainerComponents from "../../util/components/createContainerComponents.ts";
 
 const footerHelp: Command = {
 	notSlashCommand: true,
@@ -19,13 +10,7 @@ const footerHelp: Command = {
 			function: async (interaction: ButtonInteraction): Promise<void> => {
 				interaction.reply({
 					flags: MessageFlags.IsComponentsV2 + MessageFlags.Ephemeral,
-					components: [
-						header.header,
-						header.separator,
-						//
-						componentFooter.separator,
-						componentFooter.main,
-					],
+					components: components.components,
 				});
 			},
 		},
@@ -33,3 +18,8 @@ const footerHelp: Command = {
 };
 
 export default footerHelp;
+
+const components = createContainerComponents({
+	headerTitle: "Happy ta' Help!",
+	components: [{ type: ComponentType.TextDisplay, content: "Hello World!" }],
+});
