@@ -1,3 +1,3 @@
-export default async function createTickeChannel(interaction: unknown) {
+export default async function createTicketChannel(interaction: unknown) {
 	//
 }

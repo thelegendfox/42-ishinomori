@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 dotenv.config();
 
+const deployToGuild = false;
+
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +28,7 @@ for (const folder of commandFolders) {
 		const filePath = path.join(commandsPath, file);
 		const { default: command } = await import(filePath);
 		if ("data" in command && "execute" in command) {
+			if ("guildOnly" in command && deployToGuild) continue;
 			commands.push(command.data.toJSON());
 		} else {
 			console.log(
@@ -46,16 +49,28 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 		);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
-		const data: any = await rest.put(
-			Routes.applicationGuildCommands(
-				process.env.CLIENT_ID!,
-				process.env.GUILD_ID!
-			),
-			{ body: commands }
-		);
+		let returnedData;
+
+		// @ts-expect-error // leave this here so that deployToGuild doesnt trigger (set only by user)
+		if (deployToGuild === true) {
+			const data: any = await rest.put(
+				Routes.applicationGuildCommands(
+					process.env.CLIENT_ID!,
+					process.env.GUILD_ID!
+				),
+				{ body: commands }
+			);
+			returnedData = data;
+		} else {
+			const data: any = await rest.put(
+				Routes.applicationCommands(process.env.CLIENT_ID!),
+				{ body: commands }
+			);
+			returnedData = data;
+		}
 
 		console.log(
-			`Successfully reloaded ${data.length} application (/) commands.`
+			`Successfully reloaded ${returnedData.length} application (/) commands.`
 		);
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
