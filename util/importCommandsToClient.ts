@@ -3,6 +3,7 @@ import path from "node:path";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import type { Command, SubInteractionResponse } from "./types/commandTypes.ts";
+import Ansi from "./Ansi.ts";
 
 /**
  * Imports all commands/subcommands/special responses to the client.
@@ -22,7 +23,7 @@ export default async function importCommandsToClient(
 		for (const file of commandFiles) {
 			const filePath = path.join(commandsPath, file);
 			const fileUrl = pathToFileURL(filePath).href;
-			let command: Command = await (async () => {
+			const command: Command = await (async () => {
 				const file = await import(fileUrl);
 				return file.default ?? file;
 			})();
@@ -30,17 +31,19 @@ export default async function importCommandsToClient(
 
 			if (command.notSlashCommand) {
 				console.log(
-					`Skipping command at ${filePath} as it has the notSlashCommand property.`
+					`${Ansi.Mngmt} Skipping command at ${filePath} as it has the notSlashCommand property.`
 				);
 			} else if (command.data && command.execute) {
 				client.chatInputCommandInteractionResponses.set(
 					command.data.name,
 					command
 				);
-				console.log(`Added command ${command.data.name} to cache.`);
+				console.log(
+					`${Ansi.Mngmt} Added command ${command.data.name} to cache.`
+				);
 			} else if (!command.data || !command.execute) {
 				console.warn(
-					`The command at ${filePath} is missing a required "data" or "execute" property.`
+					`${Ansi.Warn} The command at ${filePath} is missing a required "data" or "execute" property.`
 				);
 			}
 
@@ -118,13 +121,13 @@ function addCommandsToCollection(
 	array.forEach((response: SubInteractionResponse) => {
 		if (!response.id || !response.function) {
 			console.log(
-				`Command with type ${typeOfCommand} is missing a required id or function property. If the ID exists, it will be shown here: ${response.id}`
+				`${Ansi.Mngmt} Command with type ${typeOfCommand} is missing a required id or function property. If the ID exists, it will be shown here: ${response.id}`
 			);
 			return;
 		}
 		collection.set(response.id, response.function);
 		console.log(
-			`Added ${typeOfCommand} to client's cache [id ${response.id}].`
+			`${Ansi.Mngmt} Added ${typeOfCommand} to client's cache [id ${response.id}].`
 		);
 	});
 }
