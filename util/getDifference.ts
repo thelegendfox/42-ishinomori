@@ -9,7 +9,7 @@ export default function getDifference(
 	initialMap: Map<any, any>,
 	currentMap: Map<any, any>
 ): Map<any, Array<any>> | null {
-	let differences: Map<any, Array<any>> = new Map();
+	const differences: Map<any, Array<any>> = new Map();
 
 	// If it's in the initial map but not the current one, it must have been removed.
 	for (const role of initialMap) {
