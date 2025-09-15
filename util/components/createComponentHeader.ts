@@ -1,11 +1,12 @@
 import { ComponentType, SeparatorSpacingSize } from "discord.js";
 import { fourtyTwo } from "../emojis.ts";
+import createContainerComponents from "./createContainerComponents.ts";
 
 /**
  *  Creates a new component header.
  * @param options - Options object: { title: string, emoji?: boolean (toggles 42's emoji on/off), separatorSize: small/large }.
  * @returns - ComponentHeader object, which contains ComponentHeader.Header and ComponentHeader.Separator
- * @deprecated - Use createContainerComponents.ts instead, which includes options for the component header internally
+ * @deprecated - Use {@link createContainerComponents} instead
  */
 export default function componentHeader(
 	options: ComponentHeaderOptions
