@@ -130,8 +130,8 @@ const update: Command = {
 		const interactionMemberPermissions: Collection<string, bigint> =
 			interaction.member?.roles.valueOf() as Collection<string, bigint>;
 
-		let messageData = (() => {
-			let returnVal: any = {
+		const messageData = (() => {
+			const returnVal: any = {
 				flags: MessageFlags.IsComponentsV2 + MessageFlags.Ephemeral,
 				components: updateComponentsNormal,
 			};
