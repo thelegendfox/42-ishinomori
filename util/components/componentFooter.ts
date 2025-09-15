@@ -1,7 +1,7 @@
 import { ComponentType, ButtonStyle, SeparatorSpacingSize } from "discord.js";
 import { fourtyTwo } from "../emojis.ts";
 
-const componentFooter = {
+export const componentFooter = {
 	separator: {
 		type: ComponentType.Separator,
 		divider: false,
@@ -21,6 +21,18 @@ const componentFooter = {
 			label: "Help",
 			style: ButtonStyle.Secondary,
 		},
+	},
+};
+
+export const componentFooterWithoutButton = {
+	separator: {
+		type: ComponentType.Separator,
+		divider: false,
+		spacing: SeparatorSpacingSize.Large,
+	},
+	main: {
+		type: ComponentType.TextDisplay,
+		content: `${fourtyTwo} | Fourty Two - Ishinomori`,
 	},
 };
 
