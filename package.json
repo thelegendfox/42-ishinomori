@@ -1,6 +1,8 @@
 {
 	"scripts": {
-		"start": "ts-node index.ts"
+		"start": "ts-node index.ts",
+		"lint": "eslint ./index.ts util/** commands/**",
+		"lintFix": "eslint --fix ./index.ts util/** commands/**"
 	},
 	"dependencies": {
 		"better-sqlite3": "^12.2.0",
